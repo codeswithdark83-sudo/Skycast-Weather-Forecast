@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="style.css">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+<title>Skycast – Weather Forecast</title>
+</head>
+<body>
+
+<div id="sky" class="sunny"></div>
+<div class="stars" id="stars"></div>
+<div class="rain-container" id="rain"></div>
+<div class="snow-container" id="snow"></div>
+
+<div id="app">
+
+  <!-- Search -->
+  <div class="search-bar">
+    <input class="search-input" id="cityInput" type="text" placeholder="Search city…" autocomplete="off"/>
+    
+    <button class="locate-btn" id="locateBtn" title="Use My Location">📍</button>
+    
+    <button class="search-btn" id="searchBtn" title="Search">🔍</button>
+  </div>
+  
+  <div class="locate-status" id="locateStatus"></div>
+
+  <!-- Error -->
+  <div class="error-msg" id="errorMsg"></div>
+
+  <!-- Loading -->
+  <div class="loading" id="loading">
+    <div class="spinner"></div>
+    <div style="font-size:14px;color:var(--rain-grey)">Fetching weather…</div>
+  </div>
+
+  <!-- Welcome -->
+  <div class="welcome" id="welcome">
+    <span class="welcome-icon">🌤️</span>
+    <h2>What's the weather like?</h2>
+    <p>Search for any city to get a real-time forecast with hourly and 7-day outlooks.</p>
+  </div>
+
+  <!-- Weather Content -->
+  <div id="weather-content">
+
+    <!-- Hero -->
+    <div class="hero">
+      <div class="hero-location" id="heroRegion"></div>
+      <div class="hero-city" id="heroCity"></div>
+      <div class="hero-date" id="heroDate"></div>
+      <span class="hero-icon" id="heroIcon">☀️</span>
+      <div class="hero-temp" id="heroTemp">--<sup>°C</sup></div>
+      <div class="hero-desc" id="heroDesc"></div>
+      <div class="hero-feels" id="heroFeels"></div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-row">
+      <div class="stat">
+        <span class="stat-icon">💧</span>
+        <span class="stat-val" id="statHumidity">--%</span>
+        <span class="stat-label">Humidity</span>
+      </div>
+      <div class="stat">
+        <span class="stat-icon">💨</span>
+        <span class="stat-val" id="statWind">-- km/h</span>
+        <span class="stat-label">Wind</span>
+      </div>
+      <div class="stat">
+        <span class="stat-icon">👁️</span>
+        <span class="stat-val" id="statVisibility">-- km</span>
+        <span class="stat-label">Visibility</span>
+      </div>
+      <div class="stat">
+        <span class="stat-icon">🌡️</span>
+        <span class="stat-val" id="statPressure">-- hPa</span>
+        <span class="stat-label">Pressure</span>
+      </div>
+    </div>
+
+    <!-- Hourly -->
+    <div class="section-header">
+      <span class="section-title">Hourly forecast</span>
+      <div class="unit-toggle">
+        <button class="unit-btn active" id="btnC">°C</button>
+        <button class="unit-btn" id="btnF">°F</button>
+      </div>
+    </div>
+    <div class="hourly-scroll" id="hourlyStrip"></div>
+
+    <!-- 7-day -->
+    <div class="section-header">
+      <span class="section-title">7-day outlook</span>
+    </div>
+    <div class="forecast-list" id="forecastList"></div>
+    
+    <!-- AQI Card -->
+    <div class="section-header">
+      <span class="section-title">Air Quality</span>
+    </div>
+    <div class="aqi-card" id="aqiCard">
+      <div class="aqi-top">
+        <span class="aqi-label">🌬️ AQI · Air Quality Index</span>
+        <span class="aqi-status" id="aqiStatus">--</span>
+      </div>
+      <div class="aqi-badge" style="margin-bottom:18px">
+        <div class="aqi-number" id="aqiNumber">--</div>
+      </div>
+      <div class="aqi-gauge">
+        <div class="aqi-gauge-marker" id="aqiMarker" style="left:10%"></div>
+      </div>
+      <div class="aqi-gauge-labels">
+        <span>Good</span><span>Fair</span><span>Moderate</span><span>Poor</span><span>Very Poor</span>
+      </div>
+      <div class="aqi-pollutants" id="aqiPollutants"></div>
+      <div class="aqi-advice" id="aqiAdvice"></div>
+    </div>
+
+    <!-- Extra cards -->
+    <div class="section-header">
+      <span class="section-title">Details</span>
+    </div>
+    <div class="extra-cards">
+      <div class="extra-card">
+        <div class="extra-card-title">🌅 Sunrise</div>
+        <div class="extra-card-value" id="cardSunrise">--:--</div>
+        <div class="extra-card-sub" id="cardSunset">Sunset --:--</div>
+      </div>
+      <div class="extra-card">
+        <div class="extra-card-title">☀️ UV Index</div>
+        <div class="extra-card-value" id="cardUV">--</div>
+        <div class="extra-card-sub" id="cardUVLabel">--</div>
+        <div class="uv-bar"><div class="uv-marker" id="uvMarker" style="left:0%"></div></div>
+      </div>
+      <div class="extra-card">
+        <div class="extra-card-title">🌧️ Precipitation</div>
+        <div class="extra-card-value" id="cardPrecip">--</div>
+        <div class="extra-card-sub">chance today</div>
+      </div>
+      <div class="extra-card">
+        <div class="extra-card-title">🌊 Dew Point</div>
+        <div class="extra-card-value" id="cardDew">--</div>
+        <div class="extra-card-sub" id="cardDewLabel">--</div>
+      </div>
+    </div>
+
+  </div><footer class="app-footer">
+    <p>Skycast Weather &copy; 2026. All rights reserved.</p>
+    <p class="footer-sub">Data provided by OpenWeatherMap API</p>
+  </footer>
+
+</div><script src="app.js"></script>
+</body> 
+</html>
+</body> 
+</html>
