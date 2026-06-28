@@ -1,0 +1,20 @@
+{
+  "name": "skycast-weather-forecast",
+  "version": "1.0.0",
+  "description": "A beautiful, real-time weather forecast web app with live AQI, auto-location detection, animated sky backgrounds, and a 7-day outlook.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "weather",
+    "forecast",
+    "aqi",
+    "skycast"
+  ],
+  "author": "Jatin Kr. Koli",
+  "license": "MIT",
+  "dependencies": {
+    "@vercel/analytics": "^1.4.1"
+  }
+}
